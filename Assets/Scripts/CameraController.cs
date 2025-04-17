@@ -4,8 +4,8 @@ using UnityEngine.InputSystem;
 public class CameraController : MonoBehaviour
 {
     public Transform target;     // Player
-    public Transform pivot;      // CameraPivot (segue o Player)
-    public Transform holder;     // CameraHolder (rotaciona verticalmente)
+    public Transform pivot;  // CameraPivot (segue o Player, gira horizontalmente)
+    public Transform holder; // CameraHolder (rotaciona verticalmente)
     public Transform cam;        // Main Camera
     public LayerMask collisionMask; // Define quais camadas o Raycast vai considerar
 
@@ -16,9 +16,9 @@ public class CameraController : MonoBehaviour
     public float minZoom = 5f;
     public float maxZoom = 15f;
 
-    public float verticalMin = -15f;
+    public float verticalMin = -5f;
     public float verticalMax = 30f;
-    public float cameraHeight = 5f;
+    public float cameraHeight = 4f;
 
     private Vector2 lookInput;
     private float zoomInput;
@@ -54,6 +54,10 @@ public class CameraController : MonoBehaviour
         // Centraliza o pivot no player no início
         pivot.position = target.position;
 
+        // Garante que todas as rotações comecem zeradas (evita tilt ou torção indevida)
+        pivot.rotation = Quaternion.identity;
+        holder.localRotation = Quaternion.identity;
+
         // Define rotação vertical inicial (opcional)
         holder.localEulerAngles = new Vector3(30f, 0, 0); // visão "por cima"
 
@@ -70,7 +74,7 @@ public class CameraController : MonoBehaviour
     void LateUpdate()
     {
         // Atualiza o Pivot para sempre seguir o player
-        pivot.position = target.position;
+        pivot.position = Vector3.Lerp(pivot.position, target.position, Time.deltaTime * 10f);
 
         // Se o botão direito do mouse estiver pressionado, rotaciona a câmera
         if (Mouse.current.rightButton.isPressed)
@@ -131,7 +135,7 @@ public class CameraController : MonoBehaviour
         distance = Mathf.Clamp(distance, minZoom, maxZoom);
 
         // Suaviza a transição entre o valor atual e o desejado
-        currentDistance = Mathf.Lerp(currentDistance, distance, Time.deltaTime * 5f);
+        currentDistance = Mathf.Lerp(currentDistance, distance, Time.deltaTime * 3f);
 
         // Calcula uma altura proporcional à distância (evita clipe no chão)
         float adjustedHeight = Mathf.Lerp(2f, cameraHeight, currentDistance / maxZoom);
@@ -160,7 +164,7 @@ public class CameraController : MonoBehaviour
             Vector3 safePosition = hitPoint + direction * safeDistance;
 
             // Suaviza a movimentação até a posição segura
-            cam.position = Vector3.Lerp(cam.position, safePosition, Time.deltaTime * 5f);
+            cam.position = Vector3.Lerp(cam.position, safePosition, Time.deltaTime * 3f);
         }
         else
         {
@@ -168,7 +172,7 @@ public class CameraController : MonoBehaviour
 
             // Suaviza o retorno à posição normal da câmera
             Vector3 targetWorldPosition = cam.parent.TransformPoint(desiredCamLocalPos);
-            cam.position = Vector3.Lerp(cam.position, targetWorldPosition, Time.deltaTime * 5f);
+            cam.position = Vector3.Lerp(cam.position, targetWorldPosition, Time.deltaTime * 3f);
         }
 
         //// Rotação vertical do holder (em torno do X)
