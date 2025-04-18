@@ -11,7 +11,10 @@ public class PlayerMovement : MonoBehaviour
     [Header("Velocidade")]
     public float moveSpeed = 5f;
     public float acceleration = 10f;
-    public float deceleration = 15f;
+    public float deceleration = 20f;
+
+    [Header("Modos de movimento")]
+    public bool isRunning = true; // começa correndo por padrão
 
     [Header("Rotação")]
     public float rotationSpeed = 10f;
@@ -46,6 +49,7 @@ public class PlayerMovement : MonoBehaviour
     {
         inputActions.Player.Enable();
         inputActions.Player.Jump.performed += OnJump;
+        inputActions.Player.ToggleRun.performed += _ => isRunning = !isRunning;
     }
 
     void OnDisable()
@@ -122,7 +126,10 @@ public class PlayerMovement : MonoBehaviour
 
         if (desiredDirection.magnitude > 0.1f)
         {
-            currentVelocity = Vector3.Lerp(currentVelocity, desiredDirection * moveSpeed, acceleration * Time.deltaTime);
+            //currentVelocity = Vector3.Lerp(currentVelocity, desiredDirection * moveSpeed, acceleration * Time.deltaTime);
+            float targetSpeed = isRunning ? moveSpeed : (moveSpeed / 2f); // Anda mais devagar
+            currentVelocity = Vector3.Lerp(currentVelocity, desiredDirection * targetSpeed, acceleration * Time.deltaTime);
+
 
             // Rotaciona o player na direção do movimento
             Quaternion targetRotation = Quaternion.LookRotation(desiredDirection);
@@ -180,7 +187,7 @@ public class PlayerMovement : MonoBehaviour
         // Inclinação frente e tras
         //float tiltX = Mathf.Clamp(-localVelocity.z * tiltAmount, -tiltAmount, tiltAmount);
         // Inclinação apenas lateral (estilo OSRS)
-        float tiltZ = Mathf.Clamp(localVelocity.x * tiltAmount, -tiltAmount, tiltAmount);
+        float tiltZ = Mathf.Clamp(localVelocity.x * -tiltAmount, -tiltAmount, tiltAmount);
 
         Quaternion tiltRotation = Quaternion.Euler(0, 0, tiltZ);
         //Quaternion tiltRotation = Quaternion.Euler(tiltX, 0, tiltZ);
