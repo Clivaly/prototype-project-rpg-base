@@ -235,7 +235,7 @@ Transform:
   m_GameObject: {fileID: 628750278}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalPosition: {x: 0, y: -0.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -618,13 +618,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.043619405, y: 0, z: 0, w: 0.9990483}
   m_LocalPosition: {x: 0, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 628750279}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 5, y: 0, z: 0}
 --- !u!114 &963194229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -761,6 +761,8 @@ GameObject:
   - component: {fileID: 1609174462}
   - component: {fileID: 1609174461}
   - component: {fileID: 1609174463}
+  - component: {fileID: 1609174464}
+  - component: {fileID: 1609174465}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -798,9 +800,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraTransform: {fileID: 963194228}
   visualHolder: {fileID: 1856641523}
-  moveSpeed: 5
-  acceleration: 10
+  moveSpeed: 6
+  acceleration: 3
   deceleration: 15
+  isRunning: 1
   rotationSpeed: 5
   tiltAmount: 10
   jumpForce: 8
@@ -845,6 +848,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speedSmoothTime: 0.1
+--- !u!114 &1609174464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1609174459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a27cdc0cf9296704bad8175024976fff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 1681341933}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  moveSpeed: 6
+  stoppingDistance: 0.2
+--- !u!114 &1609174465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1609174459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 267557b7e02125443a641a686a53fcd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickToMove: {fileID: 1609174464}
+  playerMovement: {fileID: 1609174461}
 --- !u!1 &1681341932 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 9c02747abbcd7b3458f7f7fd7695c16c, type: 3}
@@ -917,7 +952,7 @@ GameObject:
   - component: {fileID: 2135133198}
   - component: {fileID: 2135133197}
   - component: {fileID: 2135133196}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}

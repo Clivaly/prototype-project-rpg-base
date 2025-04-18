@@ -144,6 +144,24 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Click"",
+                    ""type"": ""Button"",
+                    ""id"": ""d9d9265d-d133-447f-947c-b4e29597079f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleMode"",
+                    ""type"": ""Button"",
+                    ""id"": ""886ac47c-6489-438a-8fc6-1700d9f70ef8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -322,6 +340,28 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""ToggleRun"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c193f1a8-556b-402e-80d3-56a210887d7e"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""06f46859-4ab5-4586-b166-8f697207680d"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleMode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -336,6 +376,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Player_Rotate = m_Player.FindAction("Rotate", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_ToggleRun = m_Player.FindAction("ToggleRun", throwIfNotFound: true);
+        m_Player_Click = m_Player.FindAction("Click", throwIfNotFound: true);
+        m_Player_ToggleMode = m_Player.FindAction("ToggleMode", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -422,6 +464,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Rotate;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_ToggleRun;
+    private readonly InputAction m_Player_Click;
+    private readonly InputAction m_Player_ToggleMode;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -457,6 +501,14 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/ToggleRun".
         /// </summary>
         public InputAction @ToggleRun => m_Wrapper.m_Player_ToggleRun;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/Click".
+        /// </summary>
+        public InputAction @Click => m_Wrapper.m_Player_Click;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/ToggleMode".
+        /// </summary>
+        public InputAction @ToggleMode => m_Wrapper.m_Player_ToggleMode;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -501,6 +553,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @ToggleRun.started += instance.OnToggleRun;
             @ToggleRun.performed += instance.OnToggleRun;
             @ToggleRun.canceled += instance.OnToggleRun;
+            @Click.started += instance.OnClick;
+            @Click.performed += instance.OnClick;
+            @Click.canceled += instance.OnClick;
+            @ToggleMode.started += instance.OnToggleMode;
+            @ToggleMode.performed += instance.OnToggleMode;
+            @ToggleMode.canceled += instance.OnToggleMode;
         }
 
         /// <summary>
@@ -530,6 +588,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @ToggleRun.started -= instance.OnToggleRun;
             @ToggleRun.performed -= instance.OnToggleRun;
             @ToggleRun.canceled -= instance.OnToggleRun;
+            @Click.started -= instance.OnClick;
+            @Click.performed -= instance.OnClick;
+            @Click.canceled -= instance.OnClick;
+            @ToggleMode.started -= instance.OnToggleMode;
+            @ToggleMode.performed -= instance.OnToggleMode;
+            @ToggleMode.canceled -= instance.OnToggleMode;
         }
 
         /// <summary>
@@ -612,5 +676,19 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnToggleRun(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Click" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnClick(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ToggleMode" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnToggleMode(InputAction.CallbackContext context);
     }
 }

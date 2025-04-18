@@ -9,16 +9,16 @@ public class PlayerMovement : MonoBehaviour
     public Transform visualHolder;              // O objeto que inclina (tilt), ex: modelo 3D do personagem
 
     [Header("Velocidade")]
-    public float moveSpeed = 5f;
-    public float acceleration = 10f;
-    public float deceleration = 20f;
+    public float moveSpeed = 7f;
+    public float acceleration = 3f;
+    public float deceleration = 15f;
 
     [Header("Modos de movimento")]
     public bool isRunning = true; // começa correndo por padrão
 
     [Header("Rotação")]
     public float rotationSpeed = 10f;
-    public float tiltAmount = 10f;
+    public float tiltAmount = 2f;
 
     [Header("Pulo")]
     public float jumpForce = 8f;
@@ -36,8 +36,6 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 currentVelocity = Vector3.zero;
     private float verticalVelocity = 0f;
     private Vector2 moveInput;
-
-    //private float rotationVelocity;
 
     void Awake()
     {
@@ -58,63 +56,11 @@ public class PlayerMovement : MonoBehaviour
         inputActions.Player.Disable();
     }
 
-    //void Update()
-    //{
-    //    // 1. Lê o input do jogador
-    //    moveInput = inputActions.Player.Move.ReadValue<Vector2>();
-
-    //    // 2. Direção baseada na câmera
-    //    Vector3 forward = cameraTransform.forward;
-    //    Vector3 right = cameraTransform.right;
-    //    forward.y = 0f;
-    //    right.y = 0f;
-    //    forward.Normalize();
-    //    right.Normalize();
-
-    //    Vector3 desiredDirection = (forward * moveInput.y + right * moveInput.x).normalized;
-
-    //    // 3. Movimento horizontal
-    //    if (desiredDirection.magnitude > 0.1f)
-    //    {
-    //        currentVelocity = Vector3.Lerp(currentVelocity, desiredDirection * moveSpeed, acceleration * Time.deltaTime);
-
-    //        // ROTACAO SUAVE SEM TRANCO
-    //        Vector3 currentEuler = transform.eulerAngles;
-    //        float targetY = Mathf.Atan2(desiredDirection.x, desiredDirection.z) * Mathf.Rad2Deg;
-    //        float smoothedY = Mathf.SmoothDampAngle(currentEuler.y, targetY, ref rotationVelocity, 0.1f); // suavização de 0.1s
-    //        transform.rotation = Quaternion.Euler(0f, smoothedY, 0f);
-    //    }
-    //    else
-    //    {
-    //        currentVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, deceleration * Time.deltaTime);
-    //    }
-
-    //    // 4. Gravidade
-    //    if (controller.isGrounded && verticalVelocity < 0)
-    //    {
-    //        verticalVelocity = -2f;
-    //    }
-    //    else
-    //    {
-    //        verticalVelocity += gravity * Time.deltaTime;
-    //    }
-
-    //    // 5. Combina movimentação
-    //    Vector3 finalVelocity = currentVelocity;
-    //    finalVelocity.y = verticalVelocity;
-
-    //    controller.Move(finalVelocity * Time.deltaTime);
-
-    //    // 6. Inclinação visual (Tilt)
-    //    ApplyTilt();
-    //}
-
-
     void Update()
     {
         moveInput = inputActions.Player.Move.ReadValue<Vector2>();
 
-        // Define direção com base na câmera
+        // Cálculo da direção baseado na câmera
         Vector3 forward = cameraTransform.forward;
         Vector3 right = cameraTransform.right;
         forward.y = 0f;
@@ -126,12 +72,10 @@ public class PlayerMovement : MonoBehaviour
 
         if (desiredDirection.magnitude > 0.1f)
         {
-            //currentVelocity = Vector3.Lerp(currentVelocity, desiredDirection * moveSpeed, acceleration * Time.deltaTime);
-            float targetSpeed = isRunning ? moveSpeed : (moveSpeed / 2f); // Anda mais devagar
+            float targetSpeed = isRunning ? moveSpeed : (moveSpeed / 2f);
             currentVelocity = Vector3.Lerp(currentVelocity, desiredDirection * targetSpeed, acceleration * Time.deltaTime);
 
-
-            // Rotaciona o player na direção do movimento
+            // Rotação
             Quaternion targetRotation = Quaternion.LookRotation(desiredDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
@@ -140,8 +84,15 @@ public class PlayerMovement : MonoBehaviour
             currentVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, deceleration * Time.deltaTime);
         }
 
-        // Atualiza animação com base na velocidade
+        // Atualiza animação com valor mínimo de corte
         float speedPercent = currentVelocity.magnitude / moveSpeed;
+
+        // Corrige falsos positivos de movimento (animação continuando mesmo parado)
+        if (moveInput == Vector2.zero && currentVelocity.magnitude < 0.1f)
+            speedPercent = 0f;
+
+        //if (speedPercent < 0.05f) 
+        //    speedPercent = 0f;
 
         if (animatorController != null)
             animatorController.UpdateAnimation(speedPercent);
@@ -187,11 +138,11 @@ public class PlayerMovement : MonoBehaviour
         // Inclinação frente e tras
         //float tiltX = Mathf.Clamp(-localVelocity.z * tiltAmount, -tiltAmount, tiltAmount);
         // Inclinação apenas lateral (estilo OSRS)
-        float tiltZ = Mathf.Clamp(localVelocity.x * -tiltAmount, -tiltAmount, tiltAmount);
+        float tiltZ = Mathf.Clamp(localVelocity.x * -tiltAmount * 0.3f, -tiltAmount, tiltAmount);
 
         Quaternion tiltRotation = Quaternion.Euler(0, 0, tiltZ);
         //Quaternion tiltRotation = Quaternion.Euler(tiltX, 0, tiltZ);
 
-        visualHolder.localRotation = Quaternion.Slerp(visualHolder.localRotation, tiltRotation, Time.deltaTime * 3f);
+        visualHolder.localRotation = Quaternion.Slerp(visualHolder.localRotation, tiltRotation, Time.deltaTime * 1f);
     }
 }
