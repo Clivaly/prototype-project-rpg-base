@@ -59,7 +59,7 @@ public class CameraController : MonoBehaviour
         holder.localRotation = Quaternion.identity;
 
         // Define rotação vertical inicial (opcional)
-        holder.localEulerAngles = new Vector3(30f, 0, 0); // visão "por cima"
+        holder.localEulerAngles = new Vector3(20f, 0, 0); // visão "por cima"
 
         // Posição inicial da câmera
         cam.localPosition = new Vector3(0, 0, -distance);

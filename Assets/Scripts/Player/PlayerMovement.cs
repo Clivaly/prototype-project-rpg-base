@@ -24,6 +24,9 @@ public class PlayerMovement : MonoBehaviour
     [Header("Camera")]
     public Transform cameraFollowAnchor; // agora vai reconhecer
 
+    [Header("Animação")]
+    public PlayerAnimatorController animatorController;
+
     private CharacterController controller;
     private InputActions inputActions;
 
@@ -105,8 +108,6 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-
-
         moveInput = inputActions.Player.Move.ReadValue<Vector2>();
 
         // Define direção com base na câmera
@@ -132,6 +133,12 @@ public class PlayerMovement : MonoBehaviour
             currentVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, deceleration * Time.deltaTime);
         }
 
+        // Atualiza animação com base na velocidade
+        float speedPercent = currentVelocity.magnitude / moveSpeed;
+
+        if (animatorController != null)
+            animatorController.UpdateAnimation(speedPercent);
+
         // Pulo e gravidade
         if (controller.isGrounded && verticalVelocity < 0)
             verticalVelocity = -2f;
@@ -152,11 +159,15 @@ public class PlayerMovement : MonoBehaviour
             cameraFollowAnchor.rotation = Quaternion.identity;
     }
 
-
     void OnJump(InputAction.CallbackContext context)
     {
         if (controller.isGrounded)
+        {
             verticalVelocity = jumpForce;
+
+            if (animatorController != null)
+                animatorController.TriggerJump();
+        }
     }
 
     void ApplyTilt()
@@ -176,5 +187,4 @@ public class PlayerMovement : MonoBehaviour
 
         visualHolder.localRotation = Quaternion.Slerp(visualHolder.localRotation, tiltRotation, Time.deltaTime * 3f);
     }
-
 }
