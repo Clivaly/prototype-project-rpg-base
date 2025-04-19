@@ -759,10 +759,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1609174460}
   - component: {fileID: 1609174462}
-  - component: {fileID: 1609174461}
   - component: {fileID: 1609174463}
+  - component: {fileID: 1609174461}
   - component: {fileID: 1609174464}
   - component: {fileID: 1609174465}
+  - component: {fileID: 1609174466}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -798,18 +799,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2570498325bf57441889ecedb984a7bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraTransform: {fileID: 963194228}
-  visualHolder: {fileID: 1856641523}
-  moveSpeed: 6
-  acceleration: 3
-  deceleration: 15
-  isRunning: 1
-  rotationSpeed: 5
-  tiltAmount: 10
-  jumpForce: 8
-  gravity: -20
-  cameraFollowAnchor: {fileID: 439429104}
-  animatorController: {fileID: 1609174463}
+  motor: {fileID: 1609174466}
 --- !u!143 &1609174462
 CharacterController:
   m_ObjectHideFlags: 0
@@ -860,12 +850,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a27cdc0cf9296704bad8175024976fff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 1681341933}
   groundMask:
     serializedVersion: 2
     m_Bits: 1024
-  moveSpeed: 6
-  stoppingDistance: 0.2
+  motor: {fileID: 1609174466}
 --- !u!114 &1609174465
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -880,6 +868,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clickToMove: {fileID: 1609174464}
   playerMovement: {fileID: 1609174461}
+--- !u!114 &1609174466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1609174459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1c0824c1f917604886e6c34d53c6fb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraTransform: {fileID: 963194228}
+  visualHolder: {fileID: 1856641523}
+  animatorController: {fileID: 1609174463}
+  moveSpeed: 6
+  acceleration: 3
+  deceleration: 12
+  rotationSpeed: 10
+  jumpForce: 8
+  gravity: -20
+  tiltAmount: 2
 --- !u!1 &1681341932 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 9c02747abbcd7b3458f7f7fd7695c16c, type: 3}

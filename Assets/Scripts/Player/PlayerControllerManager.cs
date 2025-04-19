@@ -8,24 +8,20 @@ public class PlayerControllerManager : MonoBehaviour
 
     private InputActions inputActions;
     private bool isClickToMoveActive = false;
-
     void Awake()
     {
         inputActions = new InputActions();
     }
-
     void OnEnable()
     {
         inputActions.Enable();
         inputActions.Player.ToggleMode.performed += _ => ToggleMode();
     }
-
     void OnDisable()
     {
         inputActions.Player.ToggleMode.performed -= _ => ToggleMode();
         inputActions.Disable();
     }
-
     void Start()
     {
         ApplyControlMode();
