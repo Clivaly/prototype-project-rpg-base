@@ -9,6 +9,9 @@ public class PlayerTargeting : MonoBehaviour
     [Header("Detecção")]
     public LayerMask enemyMask; // Layer que representa os inimigos
 
+    [Header("UI Target")]
+    public TargetUIController targetUI;
+
     private InputActions inputActions;
 
     void Awake()
@@ -76,6 +79,13 @@ public class PlayerTargeting : MonoBehaviour
 
         currentTarget = newTarget;
         currentTarget.Select();
+
+        if (targetUI != null)
+        {
+            EnemyStats stats = newTarget.GetComponent<EnemyStats>();
+            if (stats != null)
+                targetUI.ShowTarget(stats);
+        }
     }
 
     void ClearTarget()
@@ -84,6 +94,11 @@ public class PlayerTargeting : MonoBehaviour
         {
             currentTarget.Deselect();
             currentTarget = null;
+
+            // Esconde UI
+            if (targetUI != null)
+                targetUI.HideTarget();
         }
     }
+
 }

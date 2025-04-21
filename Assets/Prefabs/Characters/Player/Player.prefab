@@ -137,6 +137,9 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 1024
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 64
   motor: {fileID: 2786357057324750787}
 --- !u!114 &2497205248359007460
 MonoBehaviour:
