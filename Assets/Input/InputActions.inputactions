@@ -76,6 +76,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "CancelTarget",
+                    "type": "Button",
+                    "id": "1a972c26-127e-4286-9938-0cd33bbe95e5",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -274,6 +283,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "ToggleMode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "81b149e8-b89b-4d09-a46b-aa67e3906cd9",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CancelTarget",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

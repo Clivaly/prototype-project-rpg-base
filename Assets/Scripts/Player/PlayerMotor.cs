@@ -152,7 +152,7 @@ public class PlayerMotor : MonoBehaviour
         Vector3 localVelocity = transform.InverseTransformDirection(currentVelocity);
         float tiltZ = Mathf.Clamp(localVelocity.x * -tiltAmount * 0.3f, -tiltAmount, tiltAmount);
         Quaternion tiltRot = Quaternion.Euler(0, 0, tiltZ);
-        visualHolder.localRotation = Quaternion.Slerp(visualHolder.localRotation, tiltRot, Time.deltaTime * 1f);
+        visualHolder.localRotation = Quaternion.Slerp(visualHolder.localRotation, tiltRot, Time.deltaTime * 2f);
     }
 
     private void UpdateAnimation()

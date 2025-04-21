@@ -162,6 +162,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CancelTarget"",
+                    ""type"": ""Button"",
+                    ""id"": ""1a972c26-127e-4286-9938-0cd33bbe95e5"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -362,6 +371,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""ToggleMode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""81b149e8-b89b-4d09-a46b-aa67e3906cd9"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CancelTarget"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -378,6 +398,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Player_ToggleRun = m_Player.FindAction("ToggleRun", throwIfNotFound: true);
         m_Player_Click = m_Player.FindAction("Click", throwIfNotFound: true);
         m_Player_ToggleMode = m_Player.FindAction("ToggleMode", throwIfNotFound: true);
+        m_Player_CancelTarget = m_Player.FindAction("CancelTarget", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -466,6 +487,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ToggleRun;
     private readonly InputAction m_Player_Click;
     private readonly InputAction m_Player_ToggleMode;
+    private readonly InputAction m_Player_CancelTarget;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -509,6 +531,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/ToggleMode".
         /// </summary>
         public InputAction @ToggleMode => m_Wrapper.m_Player_ToggleMode;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/CancelTarget".
+        /// </summary>
+        public InputAction @CancelTarget => m_Wrapper.m_Player_CancelTarget;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -559,6 +585,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @ToggleMode.started += instance.OnToggleMode;
             @ToggleMode.performed += instance.OnToggleMode;
             @ToggleMode.canceled += instance.OnToggleMode;
+            @CancelTarget.started += instance.OnCancelTarget;
+            @CancelTarget.performed += instance.OnCancelTarget;
+            @CancelTarget.canceled += instance.OnCancelTarget;
         }
 
         /// <summary>
@@ -594,6 +623,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @ToggleMode.started -= instance.OnToggleMode;
             @ToggleMode.performed -= instance.OnToggleMode;
             @ToggleMode.canceled -= instance.OnToggleMode;
+            @CancelTarget.started -= instance.OnCancelTarget;
+            @CancelTarget.performed -= instance.OnCancelTarget;
+            @CancelTarget.canceled -= instance.OnCancelTarget;
         }
 
         /// <summary>
@@ -690,5 +722,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnToggleMode(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "CancelTarget" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnCancelTarget(InputAction.CallbackContext context);
     }
 }
