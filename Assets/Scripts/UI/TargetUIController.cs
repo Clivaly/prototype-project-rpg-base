@@ -51,12 +51,26 @@ public class TargetUIController : MonoBehaviour
 
     void UpdateTargetPosition()
     {
-        if (targetTransform == null) return;
+            if (targetTransform == null) return;
 
-        Vector3 worldPosition = targetTransform.position + Vector3.up * 2.5f; // offset pra UI aparecer acima da cabeça
-        Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
+            Vector3 worldPosition = targetTransform.position + Vector3.up * 2.5f;
+            Vector3 targetScreenPos = mainCamera.WorldToScreenPoint(worldPosition);
+            Vector3 currentPos = targetPanel.transform.position;
 
-        targetPanel.transform.position = screenPosition;
+            // Movimento suave da UI até o novo ponto na tela
+            targetPanel.transform.position = Vector3.Lerp(currentPos, targetScreenPos, Time.deltaTime * 10f);
+
+            // Esconde UI quando vira a camera
+            //Vector3 viewportPos = mainCamera.WorldToViewportPoint(targetTransform.position);
+            //bool isVisible = viewportPos.z > 0 && viewportPos.x > 0 && viewportPos.x < 1 && viewportPos.y > 0 && viewportPos.y < 1;
+            //targetPanel.SetActive(isVisible);
+
+        //if (targetTransform == null) return;
+
+        //Vector3 worldPosition = targetTransform.position + Vector3.up * 2.5f; // offset pra UI aparecer acima da cabeça
+        //Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
+
+        //targetPanel.transform.position = screenPosition;
     }
 
 }
