@@ -4,10 +4,10 @@ using UnityEngine.InputSystem;
 public class PlayerTargeting : MonoBehaviour
 {
     [Header("Alvo atual")]
-    private EnemyTarget currentTarget;
+    private ITargetable currentTarget;
 
     [Header("Detecção")]
-    public LayerMask enemyMask; // Layer que representa os inimigos
+    public LayerMask targetMask; // Layer que representa os inimigos
 
     [Header("UI Target")]
     public TargetUIController targetUI;
@@ -42,13 +42,13 @@ public class PlayerTargeting : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
 
-        if (Physics.Raycast(ray, out RaycastHit hit, 100f, enemyMask))
+        if (Physics.Raycast(ray, out RaycastHit hit, 100f, targetMask))
         {
-            EnemyTarget enemy = hit.collider.GetComponentInParent<EnemyTarget>();
+            ITargetable target = hit.collider.GetComponentInParent<ITargetable>();
 
-            if (enemy != null)
+            if (target != null)
             {
-                SelectTarget(enemy);
+                SelectTarget(target);
                 return; // Impede que o clique "vaze" pra outras ações (ex: movimento)
             }
         }
@@ -71,7 +71,7 @@ public class PlayerTargeting : MonoBehaviour
         }
     }
 
-    void SelectTarget(EnemyTarget newTarget)
+    void SelectTarget(ITargetable newTarget)
     {
         // Remove highlight anterior
         if (currentTarget != null)
@@ -82,11 +82,26 @@ public class PlayerTargeting : MonoBehaviour
 
         if (targetUI != null)
         {
-            EnemyStats stats = newTarget.GetComponent<EnemyStats>();
-            if (stats != null)
-                targetUI.ShowTarget(stats);
+            //if (stats != null)
+            targetUI.ShowTarget(currentTarget);
         }
     }
+
+    private void SetTarget(ITargetable newTarget)
+    {
+        if (currentTarget == newTarget)
+            return;
+
+        // Oculta a UI do alvo anterior, se houver
+        if (currentTarget != null)
+            targetUI.HideTarget();
+
+        currentTarget = newTarget;
+
+        if (currentTarget != null)
+            targetUI.ShowTarget(currentTarget);
+    }
+
 
     void ClearTarget()
     {
@@ -100,5 +115,4 @@ public class PlayerTargeting : MonoBehaviour
                 targetUI.HideTarget();
         }
     }
-
 }
